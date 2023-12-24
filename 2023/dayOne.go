@@ -8,47 +8,39 @@ import (
 	"strconv"
 )
 
-/*
-	a file, which I need to parse through to determine
-	a certain value by adding up two digits from within the string
-
-	example:
-	xx2xxxx5 = 25
-
-	therefore, the current objectives of this problem:
-	- Create a function capable of examining a string to form an integer and return said integer
-	- Design a storage for list of two digits
-	- Function to iterate through said storage and sum up elements for answer
-
-*/
-
 func main() {
-	localFile, err := os.Open("input.txt")
+	fmt.Println(ParseFile("input.txt"))
+}
+
+func ParseFile(path string) int {
+	// assigning the file and handling error if no file exists
+	file, err := os.Open(path)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// make sure to close file afterwards
-	defer localFile.Close()
+	// can't forget to close the file after its done being used
+	defer file.Close()
 
-	scanner := bufio.NewScanner(localFile)
+	// behaves similar to the scanner class in java
+	scanner := bufio.NewScanner(file)
 
-	var total int
-
+	var result int
 	for scanner.Scan() {
 		value := findDigit(scanner.Text())
+
 		i, err := strconv.Atoi(value)
 
 		if err != nil {
-			log.Fatal(err)
+			//log.Fatal(err)
+			result += 0
 		}
 
-		total += i
+		result += i
 	}
 
-	fmt.Println(total)
-
+	return result
 }
 
 func findDigit(str string) string {
@@ -59,7 +51,9 @@ func findDigit(str string) string {
 		var currentUnicode int = int(str[i])
 
 		if currentUnicode >= 48 && currentUnicode <= 57 {
-			strs := string(currentUnicode)
+			strs := string(rune(currentUnicode))
+			//strs := strconv.Itoa(currentUnicode)
+
 			result += strs
 			count++
 		}
@@ -74,6 +68,8 @@ func findDigit(str string) string {
 		strs := string(start) + string(end)
 
 		result = strs
+	} else if count == 0 {
+		return "0"
 	}
 
 	return result
