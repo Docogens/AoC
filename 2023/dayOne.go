@@ -6,12 +6,14 @@ import (
 )
 
 func main() {
-	localFile, err := os.ReadFile("AoC//input.txt")
+	localFile, err := os.ReadFile("input.txt")
 
 	if err != nil {
 		log.Fatal(err)
 	}
-	os.Stdout.Write(localFile)
+	//os.Stdout.Write(localFile)
+	readByte := make([]byte, 5)
+
 }
 
 /*
